@@ -1,0 +1,23 @@
+set AWS_ACCESS_KEY_ID=teste
+set AWS_SECRET_ACCESS_KEY=teste
+set AWS_DEFAULT_REGION=sa-east-1
+set AWS_DEFAULT_OUTPUT=json
+
+aws --endpoint-url=http://localhost:4566 sns create-topic --name websocket-topic
+
+aws --endpoint-url=http://localhost:4566 sns list-topics
+
+aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name websocket-queue-deadletter
+
+aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name websocket-queue --attributes file://scripts/create-queue.json
+
+aws --endpoint-url=http://localhost:4566 sqs set-queue-attributes --queue-url http://sqs.sa-east-1.localhost.localstack.cloud:4566/000000000000/websocket-queue --attributes  file://scripts/create-queue.json
+
+aws --endpoint-url=http://localhost:4566 sqs list-queues
+
+aws --endpoint-url=http://localhost:4566 sqs get-queue-attributes --queue-url http://sqs.sa-east-1.localhost.localstack.cloud:4566/000000000000/websocket-queue --attribute-names QueueArn
+
+aws --endpoint-url=http://localhost:4566 sns subscribe --topic-arn arn:aws:sns:sa-east-1:000000000000:websocket-topic --protocol sqs --notification-endpoint arn:aws:sqs:sa-east-1:000000000000:websocket-queue ––attributes RawMessageDelivery=true
+
+aws --endpoint-url=http://localhost:4566 sns list-subscriptions
+

@@ -1,0 +1,4 @@
+{
+    "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:sa-east-1:000000000000:websocket-queue\",\"maxReceiveCount\":\"3\"}",
+    "MessageRetentionPeriod": "259200"
+  }

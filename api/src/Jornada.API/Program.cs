@@ -1,6 +1,8 @@
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
+using Jornada.API.Interfaces;
+using Jornada.API.Servicos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +12,15 @@ builder.AddServiceDefaults();
 
 var options = new AWSOptions
 {
-    Credentials = new BasicAWSCredentials("", ""),
+    Credentials = new BasicAWSCredentials("teste", "teste"),
     Region = Amazon.RegionEndpoint.SAEast1,
 
 };
-options.DefaultClientConfig.ServiceURL = "";
+options.DefaultClientConfig.ServiceURL = "http://localhost:4566";
 
 builder.Services.AddAWSService<IAmazonSimpleNotificationService>(options);
 builder.Services.AddDefaultAWSOptions(options);
+builder.Services.AddScoped<INotificarService, NotificarService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
