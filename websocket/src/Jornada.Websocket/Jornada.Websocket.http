@@ -1,0 +1,6 @@
+@Jornada.Websocket_HostAddress = http://localhost:5186
+
+GET {{Jornada.Websocket_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,6 @@
+@Jornada.API_HostAddress = http://localhost:5104
+
+GET {{Jornada.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

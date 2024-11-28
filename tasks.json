@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "build",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "dotnet: build"
+		},
+		{
+			"type": "dotnet",
+			"task": "build c:\\projetos\\sso-arquitetura\\src\\Cadastro.API\\src\\Cadastro.API.csproj",
+			"file": "c:\\projetos\\sso-arquitetura\\src\\Cadastro.API\\src\\Cadastro.API.csproj",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "dotnet: build c:\\projetos\\sso-arquitetura\\src\\Cadastro.API\\src\\Cadastro.API.csproj"
+		}
+	]
+}
