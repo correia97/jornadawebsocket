@@ -5,5 +5,6 @@ namespace Jornada.API.Interfaces
     public interface INotificarService
     {
         Task PublishToTopicAsync(NotificacaoModel notificacao);
+        Task Setup();
     }
 }

@@ -19,6 +19,7 @@ namespace Jornada.API.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            _notificarService.Setup();
             return new string[] { "value1", "value2" };
         }
 
