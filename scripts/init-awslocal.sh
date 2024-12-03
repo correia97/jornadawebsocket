@@ -15,7 +15,7 @@ awslocal apigateway create-rest-api --name quote-api-gateway --tags '{"_custom_i
 
 # get parent id of resource
 echo "Export Parent ID..."
-export PARENT_ID=$(awslocal apigateway get-resources --rest-api-id $REST_API_ID | jq -r '.items[0].id')
+export PARENT_ID=$(awslocal apigateway get-resources --rest-api-id $REST_API_ID | jq -r '.items[0].id')pi
 
 # get resource id
 echo "Export Resource ID..."

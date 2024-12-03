@@ -20,15 +20,30 @@ services:
       - EXTENSION_AUTO_INSTALL=localstack-extension-terraform-init
     volumes:
       - localstackData:/var/lib/localstack
-      - /var/run/docker.sock:/var/run/docker.sock
-    
+      - /var/run/docker.sock:/var/run/docker.sock    
     networks:
       - front
       - back
-      
+  
+  redis:
+    image: redis/redis-stack:7.2.0-v9
+    container_name: redis-stack
+    ports:
+      - 6379:6379 #redis
+      - 8001:8001 #redis insight
+    volumes:
+      - redisData:/data
+    environment:
+      REDIS_ARGS: --requirepass redis-stack
+    networks:
+      - front
+      - back
+
 
 volumes:
   localstackData:
+  redisData:
+
 networks:
   front:
   back:

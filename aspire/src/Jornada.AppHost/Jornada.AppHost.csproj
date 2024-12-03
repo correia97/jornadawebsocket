@@ -16,10 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\API\src\Jornada.API\Jornada.API.csproj" />
-    <ProjectReference Include="..\..\..\..\Websocket\src\Jornada.Websocket\Jornada.Websocket.csproj" />
-    <ProjectReference Include="..\..\..\..\Worker\src\Jornada.Worker\Jornada.Worker.csproj" />
-    <ProjectReference Include="..\Jornada.BFF\Jornada.BFF.csproj" />
+    <ProjectReference Include="..\..\..\api\src\Jornada.API\Jornada.API.csproj" />
+    <ProjectReference Include="..\..\..\bff\src\Jornada.BFF\Jornada.BFF.csproj" />
+    <ProjectReference Include="..\..\..\websocket\src\Jornada.Websocket\Jornada.Websocket.csproj" />
+    <ProjectReference Include="..\..\..\worker\src\Jornada.Worker\Jornada.Worker.csproj" />
+    <ProjectReference Include="..\..\..\bff\src\Jornada.BFF\Jornada.BFF.csproj" />
   </ItemGroup>
 
 </Project>

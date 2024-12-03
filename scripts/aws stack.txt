@@ -21,3 +21,4 @@ aws --endpoint-url=http://localhost:4566 sns subscribe --topic-arn arn:aws:sns:s
 
 aws --endpoint-url=http://localhost:4566 sns list-subscriptions
 
+awslocal

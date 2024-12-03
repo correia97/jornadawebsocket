@@ -5,10 +5,6 @@ VisualStudioVersion = 17.12.35514.174 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jornada.BFF", "src\Jornada.BFF\Jornada.BFF.csproj", "{EB6F3A90-48AF-4A7F-BBD1-1558D50C40CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jornada.AppHost", "src\Jornada.AppHost\Jornada.AppHost.csproj", "{32D5E20D-405D-4C10-9F4B-8994332621EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jornada.ServiceDefaults", "src\Jornada.ServiceDefaults\Jornada.ServiceDefaults.csproj", "{0B1A59B9-6C07-42F6-A3EB-A478B8B7D99F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
