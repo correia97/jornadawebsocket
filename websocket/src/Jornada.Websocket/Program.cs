@@ -1,11 +1,18 @@
 using Jornada.Websocket.Hubs;
+using Microsoft.Extensions.Configuration;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Add services to the container.
-builder.Services.AddSignalR();
+builder.Services.AddSignalR()
+    .AddStackExchangeRedis("localhost:6379,allowAdmin=true,password=redis-stack", opt =>
+    {
+        opt.Configuration.ChannelPrefix = RedisChannel.Literal("JornadaWebsocket");
+    });
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(b =>

@@ -4,6 +4,7 @@ using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using AWS.Messaging;
 using Jornada.API.Interfaces;
 using Jornada.API.Models;
 using System.Diagnostics;
@@ -16,12 +17,14 @@ namespace Jornada.API.Servicos
         private readonly IAmazonSimpleNotificationService _snsClient;
         private readonly IConfiguration _configuration;
         private readonly IAmazonSQS _sqsCliente;
+        private readonly IMessagePublisher _messagePublisher;
 
-        public NotificarService(IAmazonSimpleNotificationService snsClient, IAmazonSQS sqsCliente, IConfiguration configuration)
+        public NotificarService(IAmazonSimpleNotificationService snsClient, IAmazonSQS sqsCliente, IMessagePublisher messagePublisher, IConfiguration configuration)
         {
             _snsClient = snsClient;
             _sqsCliente = sqsCliente;
             _configuration = configuration;
+            _messagePublisher = messagePublisher;
         }
 
         public async Task Setup()
@@ -117,15 +120,7 @@ namespace Jornada.API.Servicos
         {
             try
             {
-                var request = new PublishRequest
-                {
-                    TopicArn = _configuration.GetValue<string>("sns:arn"),
-                    Message = JsonSerializer.Serialize(notificacao),
-                };
-
-
-
-                var response = await _snsClient.PublishAsync(request);
+                var response = await  _messagePublisher.PublishAsync(notificacao);
 
                 Console.WriteLine($"Successfully published message ID: {response.MessageId}");
             }

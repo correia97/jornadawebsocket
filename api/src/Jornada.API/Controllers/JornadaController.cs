@@ -13,7 +13,7 @@ namespace Jornada.API.Controllers
         private readonly INotificarService _notificarService;
         public JornadaController(INotificarService notificarService)
         {
-                _notificarService = notificarService;
+            _notificarService = notificarService;
         }
         // GET: api/<JornadaController>
         [HttpGet]

@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\aspire\src\Jornada.ServiceDefaults\Jornada.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\..\Worker\src\Jornada.Worker\Jornada.Worker.csproj" />
   </ItemGroup>
 
 </Project>
