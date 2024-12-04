@@ -18,8 +18,10 @@ builder.Services.AddSignalR()
             {
                 AbortOnConnectFail = false
             };
-            config.EndPoints.Add(IPAddress.Loopback, 0);
+            config.EndPoints.Add("localhost", 0);
             config.SetDefaultPorts();
+            config.AllowAdmin = true;
+            config.Password = "redis-stack";
             var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
             connection.ConnectionFailed += (_, e) =>
             {

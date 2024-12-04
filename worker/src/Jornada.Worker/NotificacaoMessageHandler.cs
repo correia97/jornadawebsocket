@@ -27,7 +27,7 @@ namespace Jornada.Worker
             {
                 return MessageProcessStatus.Failed();
             }
-
+            Thread.Sleep(TimeSpan.FromSeconds(5));
             if (await _notificacaoService.Processar(messageEnvelope.Message))
                 // Return success so the framework will delete the message from the queue.
                 return MessageProcessStatus.Success();

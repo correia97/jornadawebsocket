@@ -1,0 +1,112 @@
+{
+    "$schema": "https://json.schemastore.org/aspire-8.0.json",
+    "resources": {
+        "worker": {
+          "type": "project.v0",
+          "path": "../../../worker/src/Jornada.Worker/Jornada.Worker.csproj",
+          "env": {
+            "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+            "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+            "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+            "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true"
+          }
+        },
+      "api": {
+        "type": "project.v0",
+        "path": "../../../api/src/Jornada.API/Jornada.API.csproj",
+        "env": {
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+          "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+          "HTTP_PORTS": "{api.bindings.http.targetPort}"
+        },
+        "bindings": {
+          "http": {
+            "scheme": "http",
+            "protocol": "tcp",
+            "transport": "http",
+            "external": true
+          },
+          "https": {
+            "scheme": "https",
+            "protocol": "tcp",
+            "transport": "http",
+            "external": true
+          }
+        }
+      },
+      "websocket": {
+        "type": "project.v0",
+        "path": "../../../websocket/src/Jornada.Websocket/Jornada.Websocket.csproj",
+        "env": {
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+          "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+          "HTTP_PORTS": "{websocket.bindings.http.targetPort}"
+        },
+        "bindings": {
+          "http": {
+            "scheme": "http",
+            "protocol": "tcp",
+            "transport": "http",
+            "external": true
+          },
+          "https": {
+            "scheme": "https",
+            "protocol": "tcp",
+            "transport": "http",
+            "external": true
+          }
+        }
+      },
+      "bff": {
+        "type": "project.v0",
+        "path": "../../../bff/src/Jornada.BFF/Jornada.BFF.csproj",
+        "env": {
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+          "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+          "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+          "HTTP_PORTS": "{bff.bindings.http.targetPort}"
+        },
+        "bindings": {
+          "http": {
+            "scheme": "http",
+            "protocol": "tcp",
+            "transport": "http",
+            "external": true
+          },
+          "https": {
+            "scheme": "https",
+            "protocol": "tcp",
+            "transport": "http",
+            "external": true
+          }
+        }
+      },
+      "angular": {
+        "type": "dockerfile.v0",
+        "path": "../../../front/client-websocket/Dockerfile",
+        "context": "../../../front/client-websocket",
+        "env": {
+          "NODE_ENV": "development",
+          "services__bff__http__0": "{bff.bindings.http.url}",
+          "services__bff__https__0": "{bff.bindings.https.url}",
+          "services__websocket__http__0": "{websocket.bindings.http.url}",
+          "services__websocket__https__0": "{websocket.bindings.https.url}",
+          "PORT": "{angular.bindings.http.targetPort}"
+        },
+        "bindings": {
+          "http": {
+            "scheme": "http",
+            "protocol": "tcp",
+            "transport": "http",
+            "targetPort": 4200,
+            "external": true
+          }
+        }
+      }
+    }
+  }
