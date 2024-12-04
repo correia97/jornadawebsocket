@@ -1,6 +1,7 @@
 using Jornada.Websocket.Hubs;
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,27 @@ builder.Services.AddSignalR()
     .AddStackExchangeRedis("localhost:6379,allowAdmin=true,password=redis-stack", opt =>
     {
         opt.Configuration.ChannelPrefix = RedisChannel.Literal("JornadaWebsocket");
+        opt.ConnectionFactory = async writer =>
+        {
+            var config = new ConfigurationOptions
+            {
+                AbortOnConnectFail = false
+            };
+            config.EndPoints.Add(IPAddress.Loopback, 0);
+            config.SetDefaultPorts();
+            var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+            connection.ConnectionFailed += (_, e) =>
+            {
+                Console.WriteLine("Connection to Redis failed.");
+            };
+
+            if (!connection.IsConnected)
+            {
+                Console.WriteLine("Did not connect to Redis.");
+            }
+
+            return connection;
+        };
     });
 
 builder.Services.AddCors(options =>
