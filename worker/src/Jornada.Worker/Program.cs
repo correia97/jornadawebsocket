@@ -24,8 +24,8 @@ var sqsURL = builder.Configuration.GetValue<string>("sqs:queueUrl");
 
 builder.Services.AddDefaultAWSOptions(options);
 builder.Services.AddAWSService<IAmazonSQS>(options);
-builder.Services.AddTransient<IProcessarNotificacaoService, ProcessarNotificacaoService>();
-builder.Services.AddTransient<IRetornoService, RetornoService>();
+builder.Services.AddTransient<IProcessarNotificacaoServico, ProcessarNotificacaoServico>();
+builder.Services.AddTransient<IRetornoServico, RetornoServico>();
 builder.Services.AddAWSMessageBus(b =>
  {
      b.ConfigureSerializationOptions(opt =>
@@ -48,7 +48,7 @@ builder.Services.AddAWSMessageBus(b =>
 
      // Register all IMessageHandler implementations with the message type they should process. 
      // Here messages that match our ChatMessage .NET type will be handled by our ChatMessageHandler
-     b.AddMessageHandler<NotificacaoMessageHandler, NotificacaoModel>(nameof(NotificacaoModel));
+     b.AddMessageHandler<NotificacaoMenssagemHandler, Notificacao>(nameof(Notificacao));
  });
 
 

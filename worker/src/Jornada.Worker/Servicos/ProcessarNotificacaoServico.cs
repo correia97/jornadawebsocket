@@ -3,16 +3,16 @@ using Jornada.Worker.Models;
 
 namespace Jornada.Worker.Servicos
 {
-    public class ProcessarNotificacaoService : IProcessarNotificacaoService
+    public class ProcessarNotificacaoServico : IProcessarNotificacaoServico
     {
-        private readonly IRetornoService _retornoService;
+        private readonly IRetornoServico _retornoService;
 
-        public ProcessarNotificacaoService(IRetornoService retornoService)
+        public ProcessarNotificacaoServico(IRetornoServico retornoService)
         {
             _retornoService = retornoService;
         }
 
-        public async Task<bool> Processar(NotificacaoModel notificacao)
+        public async Task<bool> Processar(Notificacao notificacao)
         {
             var result = await _retornoService.DisparRetorno(notificacao);
             return result;

@@ -15,9 +15,9 @@ public class Worker : BackgroundService
     private readonly ILogger<Worker> _logger;
     private readonly IConfiguration _configuration;
     private readonly IAmazonSQS _sqsCliente;
-    private readonly IProcessarNotificacaoService _notificacaoService;
+    private readonly IProcessarNotificacaoServico _notificacaoService;
 
-    public Worker(ILogger<Worker> logger, IAmazonSQS sqsCliente, IConfiguration configuration, IProcessarNotificacaoService notificacaoService)
+    public Worker(ILogger<Worker> logger, IAmazonSQS sqsCliente, IConfiguration configuration, IProcessarNotificacaoServico notificacaoService)
     {
         _sqsCliente = sqsCliente;
         _configuration = configuration;

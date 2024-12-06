@@ -20,8 +20,9 @@ namespace Jornada.Websocket.Controllers
 
         // POST api/<NotificacaoController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] NotificacaoModel notificacao)
+        public async Task<ActionResult> Post([FromBody] Notificacao notificacao)
         {
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", notificacao.Usuario, notificacao.Mensagem);
             return Ok();
         }
 

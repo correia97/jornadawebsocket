@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Jornada.Worker.Interfaces
 {
-    public interface IRetornoService
+    public interface IRetornoServico
     {
-        Task<bool> DisparRetorno(NotificacaoModel notificacao);
+        Task<bool> DisparRetorno(Notificacao notificacao);
     }
 }

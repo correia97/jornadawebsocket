@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Jornada.Worker.Servicos
 {
-    public class RetornoService : IRetornoService
+    public class RetornoServico : IRetornoServico
     {
-        public RetornoService()
+        public RetornoServico()
         {
                 
         }
-        public async Task<bool> DisparRetorno(NotificacaoModel notificacao)
+        public async Task<bool> DisparRetorno(Notificacao notificacao)
         {
             return true;
         }

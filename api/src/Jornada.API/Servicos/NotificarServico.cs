@@ -12,14 +12,14 @@ using System.Text.Json;
 
 namespace Jornada.API.Servicos
 {
-    public class NotificarService : INotificarService
+    public class NotificarServico : INotificarServico
     {
         private readonly IAmazonSimpleNotificationService _snsClient;
         private readonly IConfiguration _configuration;
         private readonly IAmazonSQS _sqsCliente;
         private readonly IMessagePublisher _messagePublisher;
 
-        public NotificarService(IAmazonSimpleNotificationService snsClient, IAmazonSQS sqsCliente, IMessagePublisher messagePublisher, IConfiguration configuration)
+        public NotificarServico(IAmazonSimpleNotificationService snsClient, IAmazonSQS sqsCliente, IMessagePublisher messagePublisher, IConfiguration configuration)
         {
             _snsClient = snsClient;
             _sqsCliente = sqsCliente;
@@ -116,7 +116,7 @@ namespace Jornada.API.Servicos
             return getAttributesResponse.QueueARN;
         }
 
-        public async Task PublishToTopicAsync(NotificacaoModel notificacao)
+        public async Task PublishToTopicAsync(Notificacao notificacao)
         {
             try
             {

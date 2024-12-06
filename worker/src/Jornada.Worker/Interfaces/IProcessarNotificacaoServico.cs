@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Jornada.Worker.Interfaces
 {
-    public interface IProcessarNotificacaoService
+    public interface IProcessarNotificacaoServico
     {
-        Task<bool> Processar(NotificacaoModel notificacao);
+        Task<bool> Processar(Notificacao notificacao);
     }
 }

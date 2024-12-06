@@ -5,17 +5,17 @@ using Jornada.Worker.Models;
 
 namespace Jornada.Worker
 {
-    public class NotificacaoMessageHandler : IMessageHandler<NotificacaoModel>
+    public class NotificacaoMenssagemHandler : IMessageHandler<Notificacao>
     {
 
         private readonly IConfiguration _configuration;
-        private readonly IProcessarNotificacaoService _notificacaoService;
-        public NotificacaoMessageHandler(IConfiguration configuration, IProcessarNotificacaoService notificacaoService)
+        private readonly IProcessarNotificacaoServico _notificacaoService;
+        public NotificacaoMenssagemHandler(IConfiguration configuration, IProcessarNotificacaoServico notificacaoService)
         {
             _configuration = configuration;
             _notificacaoService = notificacaoService;
         }
-        public async Task<MessageProcessStatus> HandleAsync(MessageEnvelope<NotificacaoModel> messageEnvelope, CancellationToken token = default)
+        public async Task<MessageProcessStatus> HandleAsync(MessageEnvelope<Notificacao> messageEnvelope, CancellationToken token = default)
         {
             // Add business and validation logic here.
             if (messageEnvelope == null)

@@ -10,8 +10,8 @@ namespace Jornada.API.Controllers
     [ApiController]
     public class JornadaController : ControllerBase
     {
-        private readonly INotificarService _notificarService;
-        public JornadaController(INotificarService notificarService)
+        private readonly INotificarServico _notificarService;
+        public JornadaController(INotificarServico notificarService)
         {
             _notificarService = notificarService;
         }
@@ -32,7 +32,7 @@ namespace Jornada.API.Controllers
 
         // POST api/<JornadaController>
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] NotificacaoModel notificacao)
+        public async Task<ActionResult> Post([FromBody] Notificacao notificacao)
         {
             await _notificarService.PublishToTopicAsync(notificacao);
             return Ok();

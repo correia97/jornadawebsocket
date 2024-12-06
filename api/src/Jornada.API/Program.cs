@@ -28,7 +28,7 @@ options.DefaultClientConfig.UseHttp = true;
 builder.Services.AddDefaultAWSOptions(options);
 builder.Services.AddAWSService<IAmazonSQS>(options);
 builder.Services.AddAWSService<IAmazonSimpleNotificationService>(options);
-builder.Services.AddScoped<INotificarService, NotificarService>();
+builder.Services.AddScoped<INotificarServico, NotificarServico>();
 
 builder.Services.AddAWSMessageBus(b =>
 {
@@ -40,7 +40,7 @@ builder.Services.AddAWSMessageBus(b =>
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         };
     });
-    b.AddSNSPublisher<NotificacaoModel>(snsARN, nameof(NotificacaoModel));
+    b.AddSNSPublisher<Notificacao>(snsARN, nameof(Notificacao));
 
 });
 
