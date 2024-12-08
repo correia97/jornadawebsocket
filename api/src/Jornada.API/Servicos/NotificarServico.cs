@@ -1,6 +1,4 @@
-﻿
-using Amazon.Runtime.Internal.Transform;
-using Amazon.SimpleNotificationService;
+﻿using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
@@ -120,7 +118,7 @@ namespace Jornada.API.Servicos
         {
             try
             {
-                var response = await  _messagePublisher.PublishAsync(notificacao);
+                var response = await _messagePublisher.PublishAsync(notificacao);
 
                 Console.WriteLine($"Successfully published message ID: {response.MessageId}");
             }

@@ -1,7 +1,5 @@
 using Jornada.Websocket.Hubs;
-using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 

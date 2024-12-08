@@ -1,11 +1,9 @@
-using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SQS;
 using Jornada.API.Interfaces;
-using Jornada.API.Servicos;
 using Jornada.API.Models;
+using Jornada.API.Servicos;
 using LocalStack.Client.Extensions;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 

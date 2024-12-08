@@ -1,11 +1,5 @@
-using Amazon.Runtime.Internal.Endpoints.StandardLibrary;
 using Amazon.SQS;
-using Amazon.SQS.Model;
-using AWS.Messaging;
 using Jornada.Worker.Interfaces;
-using Jornada.Worker.Models;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
 
 
 namespace Jornada.Worker;

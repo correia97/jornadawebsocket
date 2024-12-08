@@ -1,29 +1,42 @@
-﻿using Jornada.BFF.Models;
+﻿using Jornada.BFF.Interfaces;
+using Jornada.BFF.Models;
 
 namespace Jornada.BFF.Servicos
 {
-    public class JornadaServico
+    public class JornadaServico : IJornadaServico
     {
         private readonly HttpClient _httpClient;
         public JornadaServico(IConfiguration configuration)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri(configuration.GetValue<string>("api:url"));
+            //var hander = new HttpClientHandler
+            //{               
+            //};
+            _httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(configuration.GetValue<string>("api:url"))
+            };
         }
 
-        public async Task<Simulacao> RecuperarSimulacao(Guid usuarioId)
+        public async Task<Simulacao> RecuperarSimulacao(Guid usuarioId, Guid correlationId)
         {
-            var response = await _httpClient.GetAsync("/api/simulacao");
+            var httpRequest = new HttpRequestMessage(HttpMethod.Get, $"/api/simulacao/{usuarioId}");
+            httpRequest.Headers.Add("correlationId", correlationId.ToString());
+            var response = await _httpClient.SendAsync(httpRequest);
             if (!response.IsSuccessStatusCode)
                 return null;
 
             return await response.Content.ReadFromJsonAsync<Simulacao>();
         }
 
-        public async Task Contratar(Simulacao simulacao)
+        public async Task<bool> Contratar(Simulacao simulacao, Guid correlationId)
         {
 
-            await _httpClient.PostAsJsonAsync("/api/simulacao", simulacao);
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/simulacao");
+            httpRequest.Headers.Add("correlationId", correlationId.ToString());
+            httpRequest.Content = JsonContent.Create(simulacao);
+            var response = await _httpClient.SendAsync(httpRequest);
+
+            return response.IsSuccessStatusCode;
         }
     }
 }

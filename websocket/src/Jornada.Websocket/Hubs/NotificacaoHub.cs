@@ -7,7 +7,7 @@ namespace Jornada.Websocket.Hubs
     {
         public NotificacaoHub()
         {
-                
+
         }
 
         public async Task NewMessage(string user, string message)
@@ -39,7 +39,8 @@ namespace Jornada.Websocket.Hubs
             return base.OnDisconnectedAsync(exception);
         }
 
-        public void PrintContext(string chamador, HubCallerContext context) {
+        public void PrintContext(string chamador, HubCallerContext context)
+        {
 
             Console.WriteLine($"ConnectionID {context.ConnectionId}");
 
@@ -47,8 +48,8 @@ namespace Jornada.Websocket.Hubs
             Debug.WriteLine($"ConnectionID {context.ConnectionId}");
 
             Debug.WriteLine($"UserIdentifier {context.UserIdentifier}");
-            if(context.Items?.Count > 0) 
-                foreach(var item in context.Items)
+            if (context.Items?.Count > 0)
+                foreach (var item in context.Items)
                 {
                     Console.WriteLine($"Key {item.Key}  Value {item.Value}");
                     Debug.WriteLine($"Key {item.Key}  Value {item.Value}");

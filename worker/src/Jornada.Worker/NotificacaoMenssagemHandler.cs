@@ -1,5 +1,4 @@
-﻿using Amazon.SQS;
-using AWS.Messaging;
+﻿using AWS.Messaging;
 using Jornada.Worker.Interfaces;
 using Jornada.Worker.Models;
 

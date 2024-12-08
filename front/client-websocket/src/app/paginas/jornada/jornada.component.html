@@ -1,0 +1,16 @@
+<p>jornada works!</p>
+
+<div class="container">
+    <h1>Contrate</h1>
+    <button (click)="simular()">Simular</button>
+</div>
+
+
+
+<div class="container" [hidden]="simulacao == undefined">
+    <div>Id: {{simulacao?.id}}</div>
+    <div>Valor: {{simulacao?.valor}}</div>
+    <div>Data: {{simulacao?.data}}</div>
+    <div>
+        <button (click)="contratar()">Contratar</button></div>
+</div>
