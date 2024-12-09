@@ -25,8 +25,14 @@ export class AppComponent {
     if (usuarioId == null || usuarioId == "" || usuarioId == undefined) {
       localStorage.setItem("usuarioId", this.generateGUID());
     }
+
+    let token = localStorage.getItem("token");
+    if (token == null || token == "" || token == undefined) {
+      this.setToken();
+    }
     websocket.escutarHub("ReceiveMessage", (user, message) => this.exibirNotificacao(user, message));
     websocket.iniciarConexao();
+    websocket.registrarUsuario();
   }
 
   public exibirNotificacao(usuario: string, mensagem: string): void {
@@ -41,6 +47,10 @@ export class AppComponent {
   generateGUID(): string {
     let myuuid = uuidv4();
     return myuuid;
+  }
+
+  setToken(){
+    localStorage.setItem("token","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c");
   }
 
 }

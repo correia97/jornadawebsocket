@@ -1,13 +1,17 @@
 using Jornada.Websocket.Hubs;
+using Jornada.Websocket.Interfaces;
+using Jornada.Websocket.Repository;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddScoped<IUsuarioRepo, UsuarioRepo>();
+
 
 // Add services to the container.
 builder.Services.AddSignalR()
-    .AddStackExchangeRedis("localhost:6379,allowAdmin=true,password=redis-stack", opt =>
+    .AddStackExchangeRedis(builder.Configuration.GetValue<string>("redis:connectionstring"), opt =>
     {
         opt.Configuration.ChannelPrefix = RedisChannel.Literal("JornadaWebsocket");
         opt.ConnectionFactory = async writer =>
@@ -16,10 +20,9 @@ builder.Services.AddSignalR()
             {
                 AbortOnConnectFail = false
             };
-            config.EndPoints.Add("localhost", 0);
-            config.SetDefaultPorts();
+            config.EndPoints.Add(builder.Configuration.GetValue<string>("redis:host"), builder.Configuration.GetValue<int>("redis:port"));
             config.AllowAdmin = true;
-            config.Password = "redis-stack";
+            config.Password = builder.Configuration.GetValue<string>("redis:password");
             var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
             connection.ConnectionFailed += (_, e) =>
             {

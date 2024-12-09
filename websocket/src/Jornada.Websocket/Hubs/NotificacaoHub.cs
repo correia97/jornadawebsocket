@@ -1,13 +1,22 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Jornada.Websocket.Interfaces;
+using Jornada.Websocket.Models;
+using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
 
 namespace Jornada.Websocket.Hubs
 {
     public class NotificacaoHub : Hub
     {
-        public NotificacaoHub()
+        private readonly IUsuarioRepo _usuarioRepo;
+        public NotificacaoHub(IUsuarioRepo usuarioRepo)
         {
+            _usuarioRepo = usuarioRepo;
+        }
 
+        public async Task RegistrarUsuario(string usuarioId)
+        {
+            PrintContext("NewMessage", Context);
+            await _usuarioRepo.CadastrarAtualizar(new Usuario(usuarioId, Context.ConnectionId));
         }
 
         public async Task NewMessage(string user, string message)

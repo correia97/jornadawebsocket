@@ -1,4 +1,5 @@
 ﻿using Jornada.Websocket.Hubs;
+using Jornada.Websocket.Interfaces;
 using Jornada.Worker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -13,16 +14,20 @@ namespace Jornada.Websocket.Controllers
     {
 
         private readonly IHubContext<NotificacaoHub> _hubContext;
-        public NotificacaoController(IHubContext<NotificacaoHub> hubContext)
+        private readonly IUsuarioRepo _usuarioRepo;
+        public NotificacaoController(IHubContext<NotificacaoHub> hubContext, IUsuarioRepo usuarioRepo)
         {
             _hubContext = hubContext;
+            _usuarioRepo = usuarioRepo;
         }
 
         // POST api/<NotificacaoController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Notificacao notificacao)
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", notificacao.Usuario, notificacao.Mensagem);
+            var usuario = await _usuarioRepo.RecuperarPorUserId(notificacao.UsuarioId);
+            if (usuario != null)
+                await _hubContext.Clients.Client(usuario.ConnectionId).SendAsync("ReceiveMessage", notificacao.Usuario, notificacao.Mensagem);
             return Ok();
         }
 

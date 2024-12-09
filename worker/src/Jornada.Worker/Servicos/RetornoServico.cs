@@ -20,12 +20,22 @@ namespace Jornada.Worker.Servicos
         }
         public async Task<bool> DisparRetorno(Notificacao notificacao)
         {
+            try
+            {
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/notificacao");
-            httpRequest.Content = JsonContent.Create(notificacao);
-            var response = await _httpClient.SendAsync(httpRequest);
 
-            return response.IsSuccessStatusCode;
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/notificacao");
+                httpRequest.Content = JsonContent.Create(notificacao);
+                var response = await _httpClient.SendAsync(httpRequest);
+                var result = await response.Content.ReadAsStringAsync();
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
