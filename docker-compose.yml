@@ -24,6 +24,17 @@ services:
     networks:
       - front
       - back
+      
+  iniciar:
+    container_name: aws_cli
+    build:
+      context: scripts/
+      dockerfile: Dockerfile
+    networks:
+      - back
+    depends_on:
+     - localstack
+
   
   redis:
     image: redis/redis-stack:7.2.0-v9
@@ -39,6 +50,118 @@ services:
       - front
       - back
 
+  aspire:
+    image: mcr.microsoft.com/dotnet/aspire-dashboard:9.0
+    container_name: apire
+    ports:
+      - 18888:18888
+      - 18889:18889
+      - 18890:18890
+    environment:
+      - DASHBOARD__OTLP__CORS__ALLOWEDORIGINS=http://localhost,http://api,http://bff,http://websocket,http://front,http://localhost:8085, http://localhost:8084, http://localhost:4200, http://localhost:80, http://localhost:8080
+    networks:
+      - front
+      - back
+
+  api:
+    image: jornada_api
+    container_name: api
+    build:
+      context: .
+      dockerfile: api/src/Jornada.API/Dockerfile
+    ports: 
+     - 8081:8080
+    environment:
+     LocalStack__Config__LocalStackHost: "localstack"
+     OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     ASPNETCORE_APPLICATIONNAME: "Jornada.API"
+    networks:
+      - front
+      - back
+    depends_on:
+     - localstack
+     - aspire
+
+  bff:
+    image: jornada_bff
+    container_name: bff
+    build:
+      context: .
+      dockerfile: bff/src/Jornada.BFF/Dockerfile
+    ports: 
+     - 8082:8080
+    environment:
+     api__url: "http://api:8080"
+     OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     ASPNETCORE_APPLICATIONNAME: "Jornada.BFF"
+    networks:
+      - front
+      - back
+    depends_on:
+     - api
+     - aspire
+
+  websocket:
+    image: jornada_websocket
+    container_name: websocket
+    build:
+      context: .
+      dockerfile: websocket/src/Jornada.Websocket/Dockerfile
+    ports: 
+     - 8083:8080
+    environment:
+     redis__connectionstring: "redis:6379,allowAdmin=true,password=redis-stack"
+     host: "redis"
+     OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     ASPNETCORE_APPLICATIONNAME: "Jornada.Websocket"
+    networks:
+      - front
+      - back
+    depends_on:
+     - localstack
+     - redis
+     - aspire
+
+  worker:
+    image: jornada_worker
+    container_name: worker
+    build:
+      context: .
+      dockerfile: worker/src/Jornada.Worker/Dockerfile
+    environment:
+     api__url: "http://api:8080"
+     LocalStack__Config__LocalStackHost: "localstack"
+     OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     ASPNETCORE_APPLICATIONNAME: "Jornada.Worker"
+    networks:
+      - front
+      - back
+    depends_on:
+     - localstack
+     - aspire
+
+  front:
+    image: jornada_front
+    container_name: front
+    build:
+      context: front/client-websocket/
+      dockerfile: Dockerfile
+    environment:
+     bff: "http://localhost:8082"
+     websocket: "http://localhost:8083"
+     OTEL_EXPORTER_OTLP_ENDPOINT: http://localhost:18889
+    ports: 
+     - 8084:8080
+     - 8085:80
+    networks:
+      - front
+      - back
+    depends_on:
+     - bff
+     - websocket
+
+
+      
 
 volumes:
   localstackData:

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using OpenTelemetry;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
@@ -29,6 +30,7 @@ public static class Extensions
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
+            
         });
 
         // Uncomment the following to restrict the allowed schemes for service discovery.
@@ -58,10 +60,16 @@ public static class Extensions
             .WithTracing(tracing =>
             {
                 tracing.AddSource(builder.Environment.ApplicationName)
-                    .AddAspNetCoreInstrumentation()
+                    .AddAspNetCoreInstrumentation(builder.Environment.ApplicationName, opt =>
+                    {
+                        opt.RecordException = true;
+                    })
                     // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
                     //.AddGrpcClientInstrumentation()
-                    .AddHttpClientInstrumentation();
+                    .AddHttpClientInstrumentation(builder.Environment.ApplicationName, opt =>
+                    {
+                        opt.RecordException = true;
+                    });
             });
 
         builder.AddOpenTelemetryExporters();
@@ -92,7 +100,7 @@ public static class Extensions
     {
         builder.Services.AddHealthChecks()
             // Add a default liveness check to ensure app is responsive
-            .AddCheck("self", () => HealthCheckResult.Healthy(), ["live"]);
+            .AddCheck("self", () => HealthCheckResult.Healthy(), ["live", builder.Environment.ApplicationName]);
 
         return builder;
     }

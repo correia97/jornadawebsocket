@@ -1,6 +1,6 @@
 ﻿using Jornada.Websocket.Hubs;
 using Jornada.Websocket.Interfaces;
-using Jornada.Worker.Models;
+using Jornada.Websocket.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 

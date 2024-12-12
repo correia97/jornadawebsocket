@@ -5,6 +5,8 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-Jornada.Worker-5ef47c9e-bad2-4443-84eb-174b37eb2545</UserSecretsId>
+	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <DockerfileContext>..\..\</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>

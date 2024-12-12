@@ -42,9 +42,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(b =>
     {
-        b.WithOrigins("http://localhost:4200")
+        b.WithOrigins("http://localhost:4200", "http://localhost:8085", "http://localhost:8084", "http://localhost:4200", "http://localhost:80", "http://localhost:8080")
         .AllowAnyHeader()
-        .WithMethods("GET", "POST")
+        .WithMethods("GET", "POST", "OPTIONS")
         .AllowCredentials();
     });
 });
@@ -58,11 +58,10 @@ var app = builder.Build();
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 app.UseCors();
 app.MapHub<NotificacaoHub>("/notificacaohub");
 app.UseHttpsRedirection();

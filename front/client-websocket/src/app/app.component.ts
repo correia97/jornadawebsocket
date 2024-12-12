@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { WebsocketService } from './servicos/websocket.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { v4 as uuidv4 } from 'uuid'
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,13 @@ export class AppComponent {
    *
    */
   constructor(private websocket: WebsocketService) {
+
+    console.log('environment.bffUrl')
+    console.log(environment.bffUrl);
+    
+    console.log('environment.hubUrl')
+    console.log(environment.hubUrl);
+
     let usuarioId = localStorage.getItem("usuarioId");
     if (usuarioId == null || usuarioId == "" || usuarioId == undefined) {
       localStorage.setItem("usuarioId", this.generateGUID());

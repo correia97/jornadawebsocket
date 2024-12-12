@@ -24,20 +24,20 @@ export class JornadaComponent {
     let correlationID = uuidv4();
     let usuarioId = localStorage.getItem("usuarioId") ?? uuidv4();
     let simulacao = this.bff.simular(usuarioId, correlationID);
-    debugger;
+    // debugger;
     simulacao.subscribe(resp => {
-      debugger;
+      // debugger;
       this.simulacao = resp;
       localStorage.setItem("correlationID", correlationID);
     });
   }
 
   async contratar() {
-    debugger;
+    // debugger;
     let correlationID = localStorage.getItem("correlationID") ?? uuidv4();
     let simulacao = this.bff.contratar(this.simulacao as Simulacao, correlationID);
     simulacao.subscribe(resp => {
-      debugger;
+      // debugger;
       this.router.navigate(['/confirmacao'])
     });
   }

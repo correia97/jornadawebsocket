@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Simulacao } from '../Model/simulacao';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class BffService {
 
   simular(idUsuario: string, correlationId: string) : Observable<Simulacao> 
   {
-    debugger;
+    // debugger;
    return this.httpClient.get<Simulacao>(`${environment.bffUrl}/simulacao/${idUsuario}`, {
       params: {idUsuario: idUsuario},
       headers: {
@@ -28,7 +28,7 @@ export class BffService {
 
   contratar(simulacao: Simulacao, correlationId: string)
   {
-    debugger;
+    // debugger;
     return this.httpClient.post(`${environment.bffUrl}/simulacao`,simulacao, {
        headers: {
          'X-Debug-Level': 'verbose',
@@ -42,7 +42,7 @@ export class BffService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-  debugger;
+  // debugger;
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
   

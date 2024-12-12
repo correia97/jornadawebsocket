@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, LogLevel, IHttpConnectionOptions, HubConnectionState } from '@microsoft/signalr';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -48,13 +48,13 @@ export class WebsocketService {
     try {
       return await this._hubConnection.invoke(metodo, usuario, mensagem);
     } catch (error) {
-      debugger;
+      // debugger;
       console.log(error);
     }
   }
 
   async registrarUsuario() {
-    debugger;
+    // debugger;
     if( this._hubConnection.state == HubConnectionState.Connecting){
       setTimeout(() => this.registrarUsuario(), 1000);
       return;

@@ -4,17 +4,6 @@ using Jornada.BFF.Servicos;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(b =>
-    {
-        b.WithOrigins("http://localhost:4200")
-        .AllowAnyHeader()
-        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-        .AllowCredentials();
-    });
-});
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -23,16 +12,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IJornadaServico, JornadaServico>();
 
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(b =>
+    {
+        b.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+        .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 app.UseCors();
 
 app.UseHttpsRedirection();

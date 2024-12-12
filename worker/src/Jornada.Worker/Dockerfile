@@ -17,22 +17,22 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ./bff/src/Jornada.BFF/Jornada.BFF.csproj ./Jornada.BFF/
+COPY ./worker/src/Jornada.Worker/Jornada.Worker.csproj ./Jornada.Worker/
 COPY ./aspire/src/Jornada.ServiceDefaults/ ./../../../aspire/src/Jornada.ServiceDefaults/
-WORKDIR /src/Jornada.BFF
-RUN dotnet restore ./Jornada.BFF.csproj
-RUN dotnet restore ./../../../aspire/src/Jornada.ServiceDefaults/Jornada.ServiceDefaults.csproj
+WORKDIR /src/Jornada.Worker
+RUN dotnet restore Jornada.Worker.csproj
 
-COPY ./bff/src/Jornada.BFF/ .
-RUN dotnet build ./Jornada.BFF.csproj -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet restore ./../../../aspire/src/Jornada.ServiceDefaults/Jornada.ServiceDefaults.csproj
+COPY ./worker/src/Jornada.Worker/ .
+RUN dotnet build Jornada.Worker.csproj -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish ./Jornada.BFF.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish Jornada.Worker.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Jornada.BFF.dll"]
+ENTRYPOINT ["dotnet", "Jornada.Worker.dll"]
