@@ -64,7 +64,7 @@ Projeto para demonstrar o fluxo de atualização de dados para usuários no fron
 > **LocalStack** Para simular localmente serviços AWS como SNS, SQS e API Gateway. <br>
 > **Redis** Para apoiar o projeto websocket caso seja necessário escalar horizontalmente e não não perder o controle dos usuários conectando em cada uma das instancias, e também utilizado para controlar o ID do usuário com o ID da conexão dele com hubwebsocket e poder notificar corretamente cada usuário sobre seu pedido.<br>
 
-
+### Fluxo de dados
 ```mermaid
 sequenceDiagram
     actor usuário
@@ -84,6 +84,8 @@ sequenceDiagram
     Front->>BFF: Contratar
     BFF->>API: Contratar
     API->>SNS: Publica no tópico
+    API-->>BFF: Solicitação recebida
+    BFF-->>Front: Solicitação recebida
     SNS->SQS: Envia para fila
     WORKER->SQS: Escuta fila
     WORKER->>WEBSOCKET: Publicar notificação
