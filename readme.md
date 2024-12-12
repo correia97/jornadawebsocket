@@ -63,3 +63,29 @@ Projeto para demonstrar o fluxo de atualização de dados para usuários no fron
 ### Outras Depências no docker compose
 > **LocalStack** Para simular localmente serviços AWS como SNS, SQS e API Gateway. <br>
 > **Redis** Para apoiar o projeto websocket caso seja necessário escalar horizontalmente e não não perder o controle dos usuários conectando em cada uma das instancias, e também utilizado para controlar o ID do usuário com o ID da conexão dele com hubwebsocket e poder notificar corretamente cada usuário sobre seu pedido.<br>
+
+
+```mermaid
+sequenceDiagram
+    actor usuário
+    participant Front
+    participant BFF
+    participant API
+    participant WEBSOCKET
+    participant WORKER    
+    participant SNS    
+    participant SQS
+    usuário->Front: Simular    
+    Front->WEBSOCKET: Escutar Hub
+    Front->>BFF: Simular
+    BFF->>API: Simular
+    API-->>BFF:
+    BFF-->>Front:
+    Front->>BFF: Contratar
+    BFF->>API: Contratar
+    API->>SNS: Contratar
+    SNS->SQS: 
+    WORKER->SQS
+    WORKER->>WEBSOCKET: Publicar notificação
+    WEBSOCKET->Front: Notificar
+```
