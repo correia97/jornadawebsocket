@@ -79,13 +79,13 @@ sequenceDiagram
     Front->WEBSOCKET: Escutar Hub
     Front->>BFF: Simular
     BFF->>API: Simular
-    API-->>BFF:
-    BFF-->>Front:
+    API-->>BFF: Retorno
+    BFF-->>Front: Retorno
     Front->>BFF: Contratar
     BFF->>API: Contratar
-    API->>SNS: Contratar
-    SNS->SQS: 
-    WORKER->SQS
+    API->>SNS: Publica no tópico
+    SNS->SQS: Envia para fila
+    WORKER->SQS: Escuta fila
     WORKER->>WEBSOCKET: Publicar notificação
     WEBSOCKET->Front: Notificar
 ```
