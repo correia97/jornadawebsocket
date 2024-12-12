@@ -81,6 +81,7 @@ sequenceDiagram
     BFF->>API: Simular
     API-->>BFF: Retorno
     BFF-->>Front: Retorno
+    usuário->Front: Contratar   
     Front->>BFF: Contratar
     BFF->>API: Contratar
     API->>SNS: Publica no tópico
