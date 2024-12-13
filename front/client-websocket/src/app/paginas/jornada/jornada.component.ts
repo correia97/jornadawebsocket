@@ -37,7 +37,7 @@ export class JornadaComponent {
     let correlationID = localStorage.getItem("correlationID") ?? uuidv4();
     let simulacao = this.bff.contratar(this.simulacao as Simulacao, correlationID);
     simulacao.subscribe(resp => {
-      // debugger;
+       debugger;
       this.router.navigate(['/confirmacao'])
     });
   }

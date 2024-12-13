@@ -7,14 +7,17 @@ namespace Jornada.Websocket.Repository
     {
         private readonly ConnectionMultiplexer _redis;
         private readonly IDatabase _dataBase;
-        public UsuarioRepo(IConfiguration configuration)
+        private readonly ILogger<UsuarioRepo> _logger;
+        public UsuarioRepo(IConfiguration configuration, ILogger<UsuarioRepo> logger)
         {
             _redis = ConnectionMultiplexer.Connect($"{configuration.GetValue<string>("redis:connectionstring")}");
             _dataBase = _redis.GetDatabase();
+            _logger = logger;
         }
 
         public async Task<Usuario> RecuperarPorUserId(Guid idUsuario)
         {
+            _logger.LogInformation($"RecuperarPorUserId id {idUsuario}");
             var result = await _dataBase.StringGetAsync(idUsuario.ToString());
 
             if (!result.HasValue)
@@ -26,6 +29,7 @@ namespace Jornada.Websocket.Repository
 
         public async Task<bool> CadastrarAtualizar(Usuario usuario)
         {
+            _logger.LogInformation($"CadastrarAtualizar id {usuario.Id}");
             var result = await _dataBase.StringSetAsync(usuario.Id.ToString(), usuario.ConnectionId, TimeSpan.FromMinutes(40));
             return result;
 

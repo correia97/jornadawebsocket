@@ -76,7 +76,7 @@ sequenceDiagram
     participant SNS    
     participant SQS
     usuário->Front: Simular    
-    Front->WEBSOCKET: Escutar Hub
+    Front<<->>WEBSOCKET: Escutar Hub
     Front->>BFF: Simular
     BFF->>API: Simular
     API-->>BFF: Retorno
@@ -90,5 +90,5 @@ sequenceDiagram
     SNS->SQS: Envia para fila
     WORKER->SQS: Escuta fila
     WORKER->>WEBSOCKET: Publicar notificação
-    WEBSOCKET->Front: Notificar
+    WEBSOCKET<<->>Front: Notificar
 ```

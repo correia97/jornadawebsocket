@@ -34,7 +34,6 @@ services:
       - back
     depends_on:
      - localstack
-
   
   redis:
     image: redis/redis-stack:7.2.0-v9
@@ -73,8 +72,14 @@ services:
      - 8081:8080
     environment:
      LocalStack__Config__LocalStackHost: "localstack"
+     LocalStack__UseLocalStack: false
      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     OTEL_SERVICE_NAME: "API"
      ASPNETCORE_APPLICATIONNAME: "Jornada.API"
+     AWS_ACCESS_KEY_ID: teste
+     AWS_SECRET_ACCESS_KEY: teste
+     AWS_DEFAULT_REGION: sa-east-1
+     AWS_DEFAULT_OUTPUT: json
     networks:
       - front
       - back
@@ -93,6 +98,7 @@ services:
     environment:
      api__url: "http://api:8080"
      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     OTEL_SERVICE_NAME: "BFF"
      ASPNETCORE_APPLICATIONNAME: "Jornada.BFF"
     networks:
       - front
@@ -113,7 +119,12 @@ services:
      redis__connectionstring: "redis:6379,allowAdmin=true,password=redis-stack"
      host: "redis"
      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     OTEL_SERVICE_NAME: "Websocket"
      ASPNETCORE_APPLICATIONNAME: "Jornada.Websocket"
+     AWS_ACCESS_KEY_ID: teste
+     AWS_SECRET_ACCESS_KEY: teste
+     AWS_DEFAULT_REGION: sa-east-1
+     AWS_DEFAULT_OUTPUT: json
     networks:
       - front
       - back
@@ -129,10 +140,16 @@ services:
       context: .
       dockerfile: worker/src/Jornada.Worker/Dockerfile
     environment:
-     api__url: "http://api:8080"
+     api__url: "http://websocket:8080"
      LocalStack__Config__LocalStackHost: "localstack"
+     LocalStack__UseLocalStack: false
      OTEL_EXPORTER_OTLP_ENDPOINT: http://aspire:18889
+     OTEL_SERVICE_NAME: "Worker"
      ASPNETCORE_APPLICATIONNAME: "Jornada.Worker"
+     AWS_ACCESS_KEY_ID: teste
+     AWS_SECRET_ACCESS_KEY: teste
+     AWS_DEFAULT_REGION: sa-east-1
+     AWS_DEFAULT_OUTPUT: json
     networks:
       - front
       - back
@@ -150,6 +167,7 @@ services:
      bff: "http://localhost:8082"
      websocket: "http://localhost:8083"
      OTEL_EXPORTER_OTLP_ENDPOINT: http://localhost:18889
+     OTEL_SERVICE_NAME: "Front"
     ports: 
      - 8084:8080
      - 8085:80

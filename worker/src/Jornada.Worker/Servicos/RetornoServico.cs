@@ -7,7 +7,9 @@ namespace Jornada.Worker.Servicos
     public class RetornoServico : IRetornoServico
     {
         private readonly HttpClient _httpClient;
-        public RetornoServico(IConfiguration configuration)
+
+        private readonly ILogger<RetornoServico> _logger;
+        public RetornoServico(IConfiguration configuration, ILogger<RetornoServico> logger)
         {
 
             //var hander = new HttpClientHandler
@@ -17,13 +19,13 @@ namespace Jornada.Worker.Servicos
             {
                 BaseAddress = new Uri(configuration.GetValue<string>("api:url"))
             };
+            _logger = logger;
         }
         public async Task<bool> DisparRetorno(Notificacao notificacao)
         {
             try
             {
-
-
+                _logger.LogInformation($"Notificar usuario{notificacao.UsuarioId} mensagem {notificacao.Mensagem}");
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, $"/api/notificacao");
                 httpRequest.Content = JsonContent.Create(notificacao);
                 var response = await _httpClient.SendAsync(httpRequest);
@@ -33,7 +35,7 @@ namespace Jornada.Worker.Servicos
             }
             catch (Exception ex)
             {
-
+                _logger.LogError(ex, $"Notificar usuario{notificacao.UsuarioId} mensagem {notificacao.Mensagem}");
                 throw;
             }
         }

@@ -18,8 +18,8 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(b =>
     {
-        b.AllowAnyOrigin()
-        .AllowAnyHeader()
+        b.WithOrigins("http://localhost:4200", "http://localhost:8085", "http://localhost:8084", "http://localhost:4200", "http://localhost:80", "http://localhost:8080", "http://front:80", "http://front:8080", "http://front:8085")
+          .AllowAnyHeader()
         .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         .AllowCredentials();
     });

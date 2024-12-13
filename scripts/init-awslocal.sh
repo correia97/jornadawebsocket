@@ -78,21 +78,21 @@ sleep 5s
 
 
 echo "Criar tópico"
-aws --endpoint-url=http://localstack:4566 sns create-topic --name webhook-topic
+aws --endpoint-url=http://localstack:4566 sns create-topic --name websocket-topic
 
 echo "Criar fila DLQ"
 aws --endpoint-url=http://localstack:4566 sqs create-queue  --queue-name websocket-queue-deadletter
 
 echo "Criar Fila"
-aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name webhook-queue --attributes file://create-queue.json
+aws --endpoint-url=http://localstack:4566 sqs create-queue --queue-name websocket-queue --attributes file://create-queue.json
 
 echo "Recuperar ARN da fila"
-export QUEUE_ARN=$(aws --endpoint-url=http://localstack:4566 sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/webhook-queue --attribute-names QueueArn | jq -r '.Attributes.QueueArn')
+export QUEUE_ARN=$(aws --endpoint-url=http://localstack:4566 sqs get-queue-attributes --queue-url http://localhost:4566/000000000000/websocket-queue --attribute-names QueueArn | jq -r '.Attributes.QueueArn')
 echo "QUEUE ARN: $QUEUE_ARN"
 
 echo "Criar Subscription"
 export SUBSCRIPTION_ARN=$(aws --endpoint-url=http://localstack:4566 sns subscribe \
-    --topic-arn arn:aws:sns:$AWS_DEFAULT_REGION:000000000000:webhook-topic \
+    --topic-arn arn:aws:sns:$AWS_DEFAULT_REGION:000000000000:websocket-topic \
     --protocol sqs \
     --notification-endpoint $QUEUE_ARN | jq -r '.SubscriptionArn')
 

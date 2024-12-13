@@ -16,13 +16,15 @@ namespace Jornada.API.Servicos
         private readonly IConfiguration _configuration;
         private readonly IAmazonSQS _sqsCliente;
         private readonly IMessagePublisher _messagePublisher;
+        private readonly ILogger<NotificarServico> _logger;
 
-        public NotificarServico(IAmazonSimpleNotificationService snsClient, IAmazonSQS sqsCliente, IMessagePublisher messagePublisher, IConfiguration configuration)
+        public NotificarServico(IAmazonSimpleNotificationService snsClient, IAmazonSQS sqsCliente, IMessagePublisher messagePublisher, IConfiguration configuration, ILogger<NotificarServico> logger)
         {
             _snsClient = snsClient;
             _sqsCliente = sqsCliente;
             _configuration = configuration;
             _messagePublisher = messagePublisher;
+            _logger = logger;
         }
 
         public async Task Setup()
@@ -114,24 +116,28 @@ namespace Jornada.API.Servicos
             return getAttributesResponse.QueueARN;
         }
 
-        public async Task PublishToTopicAsync(Notificacao notificacao)
+        public async Task<bool> PublishToTopicAsync(Notificacao notificacao)
         {
             try
             {
+                _logger.Log(LogLevel.Information, "PublishAsync");
                 var response = await _messagePublisher.PublishAsync(notificacao);
 
                 Console.WriteLine($"Successfully published message ID: {response.MessageId}");
+
+                _logger.Log(LogLevel.Information, $"Successfully published message ID: {response.MessageId}");
+
+                return !string.IsNullOrEmpty(response.MessageId);
             }
             catch (Amazon.SimpleNotificationService.Model.InvalidParameterException ex)
             {
-
+                _logger.Log(LogLevel.Error, ex, "PublishToTopicAsync");
                 Debug.WriteLine(ex);
                 Console.WriteLine(ex);
                 Debug.WriteLine(ex.InnerException);
                 Console.WriteLine(ex.InnerException);
-                if (ex.InnerException is Amazon.Runtime.Internal.HttpErrorResponseException)
+                if (ex.InnerException is Amazon.Runtime.Internal.HttpErrorResponseException response)
                 {
-                    var response = ((Amazon.Runtime.Internal.HttpErrorResponseException)ex.InnerException);
                     Console.WriteLine(response.Message);
                     Debug.WriteLine(response.Message);
                 }
@@ -140,6 +146,7 @@ namespace Jornada.API.Servicos
             }
             catch (Exception ex)
             {
+                _logger.Log(LogLevel.Error, ex, "PublishToTopicAsync");
                 Debug.WriteLine(ex);
                 Console.WriteLine(ex);
                 throw;
